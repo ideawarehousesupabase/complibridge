@@ -57,6 +57,15 @@ function Login() {
           <p className="text-sm text-muted-foreground mt-1">Access your compliance dashboard</p>
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
             <div>
+              <Label>Email</Label>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div>
               <Label>Password</Label>
               <div className="relative">
                 <Input
@@ -76,7 +85,6 @@ function Login() {
                 </button>
               </div>
             </div>
-            <div><Label>Password</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required /></div>
             <Button type="submit" disabled={loading} className="w-full bg-gradient-hero shadow-soft">
               {loading ? "Signing in…" : "Sign in"}
             </Button>
