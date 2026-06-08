@@ -22,6 +22,7 @@ import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppCoachRouteImport } from './routes/_app.coach'
 import { Route as AppAuditRouteImport } from './routes/_app.audit'
 import { Route as AppAlertsRouteImport } from './routes/_app.alerts'
+import { Route as AppWorkersIndexRouteImport } from './routes/_app.workers.index'
 import { Route as AppWorkersIdRouteImport } from './routes/_app.workers.$id'
 
 const SignupRoute = SignupRouteImport.update({
@@ -88,6 +89,11 @@ const AppAlertsRoute = AppAlertsRouteImport.update({
   path: '/alerts',
   getParentRoute: () => AppRoute,
 } as any)
+const AppWorkersIndexRoute = AppWorkersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppWorkersRoute,
+} as any)
 const AppWorkersIdRoute = AppWorkersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/workers': typeof AppWorkersRouteWithChildren
   '/workers/$id': typeof AppWorkersIdRoute
+  '/workers/': typeof AppWorkersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -121,8 +128,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/portal': typeof AppPortalRoute
   '/settings': typeof AppSettingsRoute
-  '/workers': typeof AppWorkersRouteWithChildren
   '/workers/$id': typeof AppWorkersIdRoute
+  '/workers': typeof AppWorkersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -140,6 +147,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/workers': typeof AppWorkersRouteWithChildren
   '/_app/workers/$id': typeof AppWorkersIdRoute
+  '/_app/workers/': typeof AppWorkersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -157,6 +165,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/workers'
     | '/workers/$id'
+    | '/workers/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -170,8 +179,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/portal'
     | '/settings'
-    | '/workers'
     | '/workers/$id'
+    | '/workers'
   id:
     | '__root__'
     | '/'
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/workers'
     | '/_app/workers/$id'
+    | '/_app/workers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -292,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAlertsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/workers/': {
+      id: '/_app/workers/'
+      path: '/'
+      fullPath: '/workers/'
+      preLoaderRoute: typeof AppWorkersIndexRouteImport
+      parentRoute: typeof AppWorkersRoute
+    }
     '/_app/workers/$id': {
       id: '/_app/workers/$id'
       path: '/$id'
@@ -304,10 +321,12 @@ declare module '@tanstack/react-router' {
 
 interface AppWorkersRouteChildren {
   AppWorkersIdRoute: typeof AppWorkersIdRoute
+  AppWorkersIndexRoute: typeof AppWorkersIndexRoute
 }
 
 const AppWorkersRouteChildren: AppWorkersRouteChildren = {
   AppWorkersIdRoute: AppWorkersIdRoute,
+  AppWorkersIndexRoute: AppWorkersIndexRoute,
 }
 
 const AppWorkersRouteWithChildren = AppWorkersRoute._addFileChildren(
